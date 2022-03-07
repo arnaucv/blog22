@@ -5,6 +5,9 @@ namespace App;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use App\Post;
+use App\Rol;
+use App\Comment;
 
 class User extends Authenticatable
 {
@@ -16,7 +19,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'username', 'email', 'password', 'rol_id'
     ];
 
     /**
@@ -36,4 +39,31 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function posts(){
+        //$user->posts()
+        return $this->hasMany(Post::class);
+    }
+
+    public function comments(){
+        return $this->hasMany(Comment::class);
+    }
+
+    public function rol(){
+        return $this->belongsTo(Rol::class);
+    }
+
+    public function hasRol($rol) {
+        if ($this->rol()->where('rol', $rol)->first()){
+            return true;
+        }
+        return false;
+    }
+
+    public function isAdmin(User $user)
+    {
+        if ($user->rol_id === 1) {
+            return true;
+        }
+        return false;
+    }
 }

@@ -1,0 +1,13 @@
+body {
+    background-color: beige;
+}
+
+.container {
+    width: auto;
+    margin: auto;
+}
+
+.likeDislike img{
+    width: 1.5vw;
+    height: 3vh;
+}
