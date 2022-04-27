@@ -11,3 +11,7 @@ body {
     width: 1.5vw;
     height: 3vh;
 }
+
+.postIdBox {
+    display: none;
+}

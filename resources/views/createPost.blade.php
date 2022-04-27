@@ -11,6 +11,8 @@
                 <input type="text" name="title" id="title" placeholder="post title" class="input-group-text"><br>
                 <label for="contents">Post Content:</label><br>
                 <input type="text" name="contents" id="contents" placeholder="contents" class="input-group-text"><br><br>
+                <label for="tags">Post Tags (separate by comma):</label><br>
+                <input type="text" name="tags" id="tags" placeholder="tags" class="input-group-text"><br><br>
                 <input type="submit" value="Upload" class="btn-info">
             </form>
         </div>

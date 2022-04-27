@@ -6,6 +6,7 @@ use Illuminate\Auth\Access\Response;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Post;
+use App\Tag;
 use App\User;
 
 class PostController extends Controller
@@ -54,6 +55,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
+        $tags = explode(',', $request->get('tags'));
+
+        $user = Auth::user();
+
+        $attributes=$request->validate([
+            'title' => 'required|max:255',
+            'contents' => 'required|max:255',
+        ]);
+
+        $attributes['user_id'] = $user->id;
+
+        $post = Post::create($attributes);
+
+
+        // $post->save();
+
+/*
         $user = Auth::user();
 
         $post = new Post();
@@ -61,7 +79,14 @@ class PostController extends Controller
         $post->contents = $request->get('contents');
         $post->user_id = $user->id;
 
-        $post->save();
+        ddd($post->id);
+        // $post->save();
+*/
+        foreach($tags as $tag) {
+            $t=Tag::create(['tag'=>$tag]);
+
+            $post->tags()->attach($t);
+        }
 
         return redirect('/myPosts')->with('success', 'The user is successfully updated');
     }
@@ -72,9 +97,10 @@ class PostController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Post $post)
     {
-        //
+        $comments = $post->comments;
+        return view('showPost', ['post'=>$post, 'comments'=>$comments]);
     }
 
     /**
@@ -85,7 +111,9 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        return view('editPost', ['post'=>$post]);
+        $tags = $post->tags;
+
+        return view('editPost', ['post'=>$post, 'tags'=>$tags]);
     }
 
     /**

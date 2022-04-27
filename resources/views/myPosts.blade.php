@@ -31,6 +31,12 @@
                 </form>
             </span>
             <hr>
+            <div>
+                @foreach ($post->tags as $tag)
+                    <button class="btn btn-success">{{ $tag->tag }}</button>
+                @endforeach
+            </div>
+            <hr>
             @endforeach
         </div>
     </div>

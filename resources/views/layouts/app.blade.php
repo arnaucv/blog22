@@ -80,7 +80,13 @@
                         @endguest
                     </ul>
                 </div>
+                <form action="{{ route('search') }}" method="POST">
+                    @csrf @method('POST')
+                    <input type="text" id="searchbox" name="searchbox" placeholder="Searcher">
+                    <input type="submit" value="Go!">
+                </form>
             </div>
+
         </nav>
 
         <main class="py-4">

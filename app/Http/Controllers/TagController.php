@@ -4,11 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Post;
-use App\Comment;
+use App\Tag;
 
-use Illuminate\Support\Facades\Auth;
-
-class CommentController extends Controller
+class TagController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -25,9 +23,9 @@ class CommentController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Post $post)
+    public function create(Request $contents)
     {
-        //return view('commentPost', ['post'=>$post]);
+        Tag::store(['content'=>$contents]);
     }
 
     /**
@@ -38,17 +36,14 @@ class CommentController extends Controller
      */
     public function store(Request $request)
     {
-        $comment = new Comment();
+        // ddd($request);
+        $attributes=$request([
+            'tag' => 'required|max:255',
+        ]);
 
-        $comment->comment = $request->get('commentArea');
-        $comment->user_id = Auth::user()->id;
-        $comment->post_id = (int)$request->get('postId');
 
-        $comment->save();
-
-        $post = Post::where('id', $comment->post_id)->first();
-
-        return redirect()->route('posts.show', $post)->with('success', 'The comment is successfully uploaded');
+        $tag = Tag::create($attributes);
+        $tag->save();
     }
 
     /**
